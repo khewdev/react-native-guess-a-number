@@ -1,27 +1,50 @@
-import React from 'react';
-import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TextInput, Button, TouchableWithoutFeedback, Keyboard } from 'react-native';
 
 import Card from '../components/Card';
 import Colors from '../constants/colors';
 import Input from '../components/Input';
 
 const StartGameScreen = props => {
+    const [enteredValue, setEnteredValue] = useState('');
+
+    const numberInputHandler = inputText => {
+        //the regex is replacing anything not from 0 - 9 to empty string
+        // setEnteredValue(inputText.replace(/[^0-9]/g), '');
+        setEnteredValue(inputText.replace(/[^0-9]/g, ''));
+    };
+
+    console.log("enteredValue: " + enteredValue);
+
+
     return (
-        <View style={styles.screen}>
-            <Text style={styles.title}>Start a New Game!</Text>
-            <Card style={styles.inputContainer}>
-                <Text>Select a Number</Text>
-                <Input style={styles.input} blurOnSubmit autoCapitalize='none' autoCorrect={false} keyboardType='number-pad' maxLength={2} />
-                <View style={styles.buttonContainer}>
-                    <View style={styles.button}>
-                        <Button title="Reset" onPress={() => { }} color={Colors.accent} />
+
+        //when touch outside of keyboard will dismiss the keyboard
+        <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
+            <View style={styles.screen}>
+                <Text style={styles.title}>Start a New Game!</Text>
+                <Card style={styles.inputContainer}>
+                    <Text>Select a Number</Text>
+                    <Input
+                        style={styles.input}
+                        blurOnSubmit
+                        autoCapitalize='none'
+                        autoCorrect={false}
+                        keyboardType='number-pad'
+                        maxLength={2}
+                        onChangeText={numberInputHandler}
+                        value={enteredValue} />
+                    <View style={styles.buttonContainer}>
+                        <View style={styles.button}>
+                            <Button title="Reset" onPress={() => { }} color={Colors.accent} />
+                        </View>
+                        <View style={styles.button}>
+                            <Button title="Confirm" onPress={() => { }} color={Colors.primary} />
+                        </View>
                     </View>
-                    <View style={styles.button}>
-                        <Button title="Confirm" onPress={() => { }} color={Colors.primary} />
-                    </View>
-                </View>
-            </Card>
-        </View>
+                </Card>
+            </View>
+        </TouchableWithoutFeedback>
     );
 };
 
