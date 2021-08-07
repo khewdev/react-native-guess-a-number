@@ -7,6 +7,8 @@ import Input from '../components/Input';
 
 const StartGameScreen = props => {
     const [enteredValue, setEnteredValue] = useState('');
+    const [confirmed, setConfirmed] = useState(false);
+    const [selectedNumber, setSelectedNumber] = useState();
 
     const numberInputHandler = inputText => {
         //the regex is replacing anything not from 0 - 9 to empty string
@@ -14,8 +16,30 @@ const StartGameScreen = props => {
         setEnteredValue(inputText.replace(/[^0-9]/g, ''));
     };
 
-    console.log("enteredValue: " + enteredValue);
+    const resetInputHandler = () => {
+        setEnteredValue('');
+        setConfirmed(false);
+    };
 
+    const confirmInputHandler = () => {
+        const chosenNumber = parseInt(enteredValue);
+        if (chosenNumber === NaN || chosenNumber <= 0 || chosenNumber > 99) {
+            return;
+        }
+
+        setConfirmed(true);
+        setEnteredValue('');
+        //setSelectedNumber can still access enteredValue after setEnteredValue(''); because setEnteredValue(''); will be queue and will only be processed the next time the component is rendered
+        //it mean setSelectedNumber still can access enteredValue in this moment
+        setSelectedNumber(chosenNumber);
+
+        //setConfirmed(true); setEnteredValue(''); setSelectedNumber(chosenNumber); will be batch in one render cycle
+    };
+    let confirmedOuptut;
+
+    if (confirmed) {
+        confirmedOuptut = <Text>Chosen Number: {selectedNumber}</Text>;
+    }
 
     return (
 
@@ -36,13 +60,20 @@ const StartGameScreen = props => {
                         value={enteredValue} />
                     <View style={styles.buttonContainer}>
                         <View style={styles.button}>
-                            <Button title="Reset" onPress={() => { }} color={Colors.accent} />
+                            <Button
+                                title="Reset"
+                                color={Colors.accent}
+                                onPress={resetInputHandler} />
                         </View>
                         <View style={styles.button}>
-                            <Button title="Confirm" onPress={() => { }} color={Colors.primary} />
+                            <Button
+                                title="Confirm"
+                                onPress={confirmInputHandler}
+                                color={Colors.primary} />
                         </View>
                     </View>
                 </Card>
+                {confirmedOuptut}
             </View>
         </TouchableWithoutFeedback>
     );
