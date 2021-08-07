@@ -13,6 +13,7 @@ import {
 import Card from '../components/Card';
 import Colors from '../constants/colors';
 import Input from '../components/Input';
+import NumberContainer from '../components/NumberContainer';
 
 const StartGameScreen = props => {
     const [enteredValue, setEnteredValue] = useState('');
@@ -45,13 +46,20 @@ const StartGameScreen = props => {
         //setSelectedNumber can still access enteredValue after setEnteredValue(''); because setEnteredValue(''); will be queue and will only be processed the next time the component is rendered
         //it mean setSelectedNumber still can access enteredValue in this moment
         setSelectedNumber(chosenNumber);
+        Keyboard.dismiss();
 
         //setConfirmed(true); setEnteredValue(''); setSelectedNumber(chosenNumber); will be batch in one render cycle
     };
     let confirmedOuptut;
 
     if (confirmed) {
-        confirmedOuptut = <Text>Chosen Number: {selectedNumber}</Text>;
+        confirmedOuptut = (
+            <Card style={styles.summaryContainer}>
+                <Text>You selected</Text>
+                <NumberContainer>{selectedNumber}</NumberContainer>
+                <Button title="START GAME" />
+            </Card>
+        );
     }
 
     return (
@@ -119,6 +127,10 @@ const styles = StyleSheet.create({
     input: {
         width: 50,
         textAlign: 'center',
+    },
+    summaryContainer: {
+        marginTop: 20,
+        alignItems: 'center'
     }
 });
 
