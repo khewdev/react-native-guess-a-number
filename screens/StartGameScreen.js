@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.26,
         //elevation only for android
         elevation: 5,
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        padding: 20
     },
     buttonContainer: {
         flexDirection: 'row',
