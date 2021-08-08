@@ -109,8 +109,9 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     title: {
-        fontSize: 20,
-        marginVertical: 10
+        fontSize: 30,
+        marginVertical: 10,
+        fontFamily: 'OpenSans-Bold'
     },
     inputContainer: {
         width: 300,
