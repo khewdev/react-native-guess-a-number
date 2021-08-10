@@ -6,6 +6,7 @@ import Icon from 'react-native-ionicons';
 import NumberContainer from '../components/NumberContainer';
 import Card from '../components/Card';
 import MainButton from '../components/MainButton';
+import BodyText from '../components/BodyText';
 
 const generateRandomBetween = (min, max, exclude) => {
     min = Math.ceil(min);
@@ -18,6 +19,18 @@ const generateRandomBetween = (min, max, exclude) => {
         return rndNum;
     }
 };
+
+const renderListItem = (value, numOfRound) => (
+    <View key={value} style={styles.listItem}>
+        <BodyText>
+            #{numOfRound}
+        </BodyText>
+
+        <BodyText>
+            {value}
+        </BodyText>
+    </View>
+);
 
 const GameScreen = props => {
     const initialGuess = generateRandomBetween(1, 100, props.userChoice);
@@ -63,14 +76,13 @@ const GameScreen = props => {
                 <MainButton onPress={nextGuessHandler.bind(this, 'greater')}><Icon name="md-add" size={24} color="white" /></MainButton>
             </Card>
 
-            <ScrollView>
-                {pastGuesses.map(guess =>
-                    <View key={guess}>
-                        <Text>
-                            {guess}
-                        </Text>
-                    </View>)}
-            </ScrollView>
+            <View style={styles.list}>
+                {/* dont style directly on ScrollView but create a View component and style in instead, also dont style on the list item because it won't work for the width: '80%' */}
+                {/* ScrollView nested in View is not working in Android if styles.list didn't set flex: 1, but it is working in iOS even flex: 1 is not set by default */}
+                <ScrollView>
+                    {pastGuesses.map((guess, index) => renderListItem(guess, pastGuesses.length - index))}
+                </ScrollView>
+            </View>
 
         </View>
     );
@@ -88,6 +100,19 @@ const styles = StyleSheet.create({
         marginTop: 20,
         width: 400,
         maxWidth: '90%'
+    },
+    listItem: {
+        borderColor: '#ccc',
+        borderWidth: 1, //if you dont set border width you wont see any border
+        padding: 15,
+        marginVertical: 10,
+        backgroundColor: 'white',
+        flexDirection: 'row', //default view box direction in react native is column( top to bottom ), to let numOfRounds and pastGuesses sit side by side, we have to set flexDirection to 'row' manually
+        justifyContent: 'space-between'
+    },
+    list: {
+        flex: 1,
+        width: '80%'
     }
 });
 
