@@ -9,6 +9,7 @@ import {
     Keyboard,
     Alert
 } from 'react-native';
+import Icon from 'react-native-ionicons';
 
 import Card from '../components/Card';
 import Colors from '../constants/colors';
@@ -60,6 +61,7 @@ const StartGameScreen = props => {
             <Card style={styles.summaryContainer}>
                 <BodyText>You selected</BodyText>
                 <NumberContainer>{selectedNumber}</NumberContainer>
+
                 <MainButton
                     onPress={() => props.onStartGame(selectedNumber)}>
                     START GAME
@@ -75,6 +77,8 @@ const StartGameScreen = props => {
             <View style={styles.screen}>
                 <TitleText style={styles.title}>Start a New Game!</TitleText>
                 <Card style={styles.inputContainer}>
+                    <Icon name="add" />
+
                     <BodyText>Select a Number</BodyText>
                     <Input
                         style={styles.input}
